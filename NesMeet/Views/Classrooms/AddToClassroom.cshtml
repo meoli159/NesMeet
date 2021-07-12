@@ -1,0 +1,64 @@
+﻿@model NesMeet.Models.Classroom
+
+@{
+    var RemainingTrainees = (List<CUser>)ViewData["RemainingTrainees"];
+    var CurrentTrainees = (List<CUser>)ViewData["CurrentTrainees"];
+}
+
+<table class="table">
+    <tr>
+        <th>Current Trainees</th>
+        <th></th>
+    </tr>
+
+    @if (CurrentTrainees.Count() == 0)
+    {
+        <tr><td colspan="2">There is no trainee.</td></tr>
+}
+    else
+    {
+        foreach (var trainee in CurrentTrainees)
+        {
+            <tr>
+                <td>@trainee.Email</td>
+                <td>
+                    <form asp-action="RemoveTrainee">
+                        <input type="hidden" name="classroomId" value="@Model.Id" />
+                        <input type="hidden" name="traineeId" value="@trainee.Id" />
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+
+        }
+    }
+</table>
+
+<table class="table">
+    <tr>
+        <th>Remaining Trainees</th>
+        <th></th>
+    </tr>
+
+    @if (RemainingTrainees.Count() == 0)
+    {
+        <tr><td colspan="2">There is no remaining trainee.</td></tr>
+    }
+    else
+    {
+        foreach (var trainee in RemainingTrainees)
+        {
+            <tr>
+                <td>@trainee.Email</td>
+                <td>
+                    <form asp-action="AddRole">
+                        <input type="hidden" name="classroomId" value="@Model.Id" />
+                        <input type="hidden" name="traineeId" value="@trainee.Id" />
+                        <button type="submit" class="btn btn-danger">Add</button>
+                    </form>
+                </td>
+            </tr>
+
+        }
+    }
+</table>
