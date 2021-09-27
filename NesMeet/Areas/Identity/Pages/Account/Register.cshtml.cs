@@ -19,7 +19,7 @@ using NesMeet.Models;
 
 namespace NesMeet.Areas.Identity.Pages.Account
 {
-    [AllowAnonymous]
+    [Authorize(Roles = "Admin,Staff")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<CUser> _signInManager;

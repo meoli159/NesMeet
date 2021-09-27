@@ -19,12 +19,12 @@
         <th>@Html.DisplayFor(model => model.EndDate)</th>
     </tr>
     <tr>
-        <th>@Html.DisplayNameFor(model => model.Sesmester)</th>
+        <th>@Html.DisplayNameFor(model => model.Semester)</th>
         <th>@Html.DisplayNameFor(model => model.Part)</th>
         <th>@Html.DisplayNameFor(model => model.Course.Code)</th>
     </tr>
     <tr>
-        <th>@Html.DisplayFor(model => model.Sesmester)</th>
+        <th>@Html.DisplayFor(model => model.Semester)</th>
         <th>@Html.DisplayFor(model => model.Part)</th>
         <th>@Html.DisplayFor(model => model.Course.Code)</th>
     </tr>
@@ -61,7 +61,7 @@
     }
 </table>
 
-<a asp-action="AddToClassroom" asp-route-classroomId="@Model.Id" class="btn btn-success mb-2">Add Trainees</a>
+<a asp-action="AddToClassroom" asp-route-classroomId="@Model.Id" class="btn btn-success my-2">Add Trainees</a>
 
 <table class="table">
     <tr>

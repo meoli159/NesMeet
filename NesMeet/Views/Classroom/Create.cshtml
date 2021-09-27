@@ -1,18 +1,17 @@
 ﻿@model NesMeet.Models.Classroom
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit</h1>
+<h1>Create</h1>
 
 <h4>Classroom</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Code" class="control-label"></label>
                 <input asp-for="Code" class="form-control" />
@@ -28,31 +27,31 @@
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
-            
             <div class="form-group">
-                <label asp-for="Sesmester" class="control-label"></label>
-                <select asp-for="Sesmester"
-                        asp-items="@Html.GetEnumSelectList<Sesmester>()" class="control-label">
+                <label asp-for="Semester" class="control-label"></label>
+                <select asp-for="Semester" 
+                        asp-items="@Html.GetEnumSelectList<Semester>()"class="control-label">
                 </select>
-                <span asp-validation-for="Sesmester" class="text-danger"></span>
+                <span asp-validation-for="Semester" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Part" class="control-label"></label>
-                <input asp-for="Part" class="form-control" />
+                <select asp-for="Part" class="form-control" >
+                    <option value="1">01</option>
+                    <option value="2">02</option>
+                </select>
                 <span asp-validation-for="Part" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ClassProfileId" class="control-label"></label>
-                <select asp-for="ClassProfileId" class="form-control" asp-items="ViewBag.ClassProfileId"></select>
-                <span asp-validation-for="ClassProfileId" class="text-danger"></span>
+                <select asp-for="ClassProfileId" class ="form-control" asp-items="ViewBag.ClassProfileId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
-                <span asp-validation-for="CourseId" class="text-danger"></span>
+                <select asp-for="CourseId" class ="form-control" asp-items="ViewBag.CourseId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

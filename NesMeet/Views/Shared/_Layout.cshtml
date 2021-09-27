@@ -7,36 +7,57 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NesMeet</a>
 
+
+
+                @if (User.IsInRole(nameof(Role.Staff)))
+                {
+                    <div class="dropdown">
+                        <button class="btn btn-outline border-0 d-flex align-items-center" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="material-icons">expand_more</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="TrainerList" asp-action="Index">Manage Trainer</a>
+
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="Department" asp-action="Index">Manage Deparment</a>
+
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="Category" asp-action="Index">Manage Category</a>
+
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="ClassProfile" asp-action="Index">Manage ClassProfile</a>
+
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="ClassRoom" asp-action="Index">Manage ClassRoom</a>
+
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="Topic" asp-action="Index">Manage Topic</a>
+
+                        </div>
+                    </div>
+                }
+
+                </ul>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NesMeet</a>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <div class="navbar-nav flex-grow-1">
 
                         @if (User.IsInRole(nameof(Role.Admin)))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Manage User</a>
                             </li>
-                            
-                        }
 
-                        @if (User.IsInRole(nameof(Role.Staff)))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="TrainerList" asp-action="Index">Manage Trainer</a>
-                            </li>
-                            
                         }
-                        </ul>
-                    <partial name="_LoginPartial"/>
+                    </div>
+
+                    <partial name="_LoginPartial" />
+
                 </div>
-            </div>
-        </nav>
+</nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">

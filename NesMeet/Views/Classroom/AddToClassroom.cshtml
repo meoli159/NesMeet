@@ -1,5 +1,4 @@
 ﻿@model NesMeet.Models.Classroom
-
 @{
     var RemainingTrainees = (List<CUser>)ViewData["RemainingTrainees"];
     var CurrentTrainees = (List<CUser>)ViewData["CurrentTrainees"];
@@ -13,7 +12,7 @@
 
     @if (CurrentTrainees.Count() == 0)
     {
-        <tr><td colspan="2">There is no trainee.</td></tr>
+        <tr><td colspan="2">There is no trainees</td></tr>
 }
     else
     {
@@ -23,8 +22,8 @@
                 <td>@trainee.Email</td>
                 <td>
                     <form asp-action="RemoveTrainee">
-                        <input type="hidden" name="classroomId" value="@Model.Id" />
                         <input type="hidden" name="traineeId" value="@trainee.Id" />
+                        <input type="hidden" name="classroomId" value="@Model.Id" />
                         <button type="submit" class="btn btn-danger">Remove</button>
                     </form>
                 </td>
@@ -35,26 +34,30 @@
 </table>
 
 <table class="table">
+
     <tr>
         <th>Remaining Trainees</th>
         <th></th>
+
     </tr>
 
     @if (RemainingTrainees.Count() == 0)
     {
-        <tr><td colspan="2">There is no remaining trainee.</td></tr>
+        <tr><td colspan="2">There is no remaining trainee</td></tr>
     }
     else
     {
         foreach (var trainee in RemainingTrainees)
         {
             <tr>
+
                 <td>@trainee.Email</td>
                 <td>
-                    <form asp-action="AddRole">
-                        <input type="hidden" name="classroomId" value="@Model.Id" />
+                    <form asp-action="AddTrainee">
                         <input type="hidden" name="traineeId" value="@trainee.Id" />
-                        <button type="submit" class="btn btn-danger">Add</button>
+                        <input type="hidden" name="classroomId" value="@Model.Id" />
+
+                        <button type="submit" class="btn btn-success">Add</button>
                     </form>
                 </td>
             </tr>

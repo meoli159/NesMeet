@@ -1,0 +1,84 @@
+﻿@model NesMeet.Models.Classroom
+
+@{
+    ViewData["Title"] = "Details";
+
+    var Trainees = (List<TraineeClassroom>)ViewData["Trainees"];
+    var Topics = (List<Topic>)ViewData["Topics"];
+}
+
+<table class="table table-bordered">
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Code)</th>
+        <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+        <th>@Html.DisplayNameFor(model => model.EndDate)</th>
+    </tr>
+    <tr>
+        <th>@Html.DisplayFor(model => model.Code)</th>
+        <th>@Html.DisplayFor(model => model.StartDate)</th>
+        <th>@Html.DisplayFor(model => model.EndDate)</th>
+    </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Semester)</th>
+        <th>@Html.DisplayNameFor(model => model.Part)</th>
+        <th>@Html.DisplayNameFor(model => model.Course.Code)</th>
+    </tr>
+    <tr>
+        <th>@Html.DisplayFor(model => model.Semester)</th>
+        <th>@Html.DisplayFor(model => model.Part)</th>
+        <th>@Html.DisplayFor(model => model.Course.Code)</th>
+    </tr>
+</table>
+
+<table class="table">
+    <tr>
+        <th>Topic</th>
+        <th>Trainer</th>
+        <th>Email</th>
+        <th></th>
+    </tr>
+
+    @if (Topics.Count() == 0)
+    {
+        <tr><td colspan="4">There is no topic.</td></tr>
+}
+    else
+    {
+        foreach (var topic in Topics)
+        {
+            <tr>
+                <td>@topic.Name</td>
+                <td>@topic.Trainer.FirstName @topic.Trainer.LastName</td>
+                <td>@topic.Trainer.Email</td>
+
+            </tr>
+        }
+    }
+</table>
+
+
+
+<table class="table">
+    <tr>
+        <th>Trainee</th>
+        <th>Email</th>
+        <th></th>
+    </tr>
+
+    @if (Trainees.Count() == 0)
+    {
+        <tr><td colspan="2">There is no trainee.</td></tr>
+    }
+    else
+    {
+        foreach (var trainee in Trainees)
+        {
+            <tr>
+                <td>@trainee.Trainee.FirstName @trainee.Trainee.LastName</td>
+                <td>@trainee.Trainee.Email</td>
+            </tr>
+        }
+    }
+</table>
+
+

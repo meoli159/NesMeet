@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using NesMeet.Models;
 
 namespace NesMeet.Controllers
 {
+    [Authorize(Roles = "Admin,Staff")]
     public class TrainerListController : Controller
     {
         private readonly ApplicationDbContext _context;

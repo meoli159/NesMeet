@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,22 +11,23 @@ using NesMeet.Models;
 
 namespace NesMeet.Controllers
 {
-    public class DepartmentsController : Controller
+    [Authorize(Roles = "Admin,Staff")]
+    public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public DepartmentsController(ApplicationDbContext context)
+        public CategoryController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Departments
+        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departments.ToListAsync());
+            return View(await _context.Categories.ToListAsync());
         }
 
-        // GET: Departments/Details/5
+        // GET: Categories/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +35,37 @@ namespace NesMeet.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(department);
+            return View(category);
         }
 
-        // GET: Departments/Create
+        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Departments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Department department)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(department);
+                _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            return View(category);
         }
 
-        // GET: Departments/Edit/5
+        // GET: Categories/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,21 @@ namespace NesMeet.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments.FindAsync(id);
-            if (department == null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return View(department);
+
+            return View(category);
         }
 
-        // POST: Departments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Department department)
+        public async Task<IActionResult> Edit(int? id, [Bind("ID,Name,Description")] Category category)
         {
-            if (id != department.Id)
+            if (id != category.Id)
             {
                 return NotFound();
             }
@@ -97,12 +96,12 @@ namespace NesMeet.Controllers
             {
                 try
                 {
-                    _context.Update(department);
+                    _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartmentExists(department.Id))
+                    if (!CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +112,10 @@ namespace NesMeet.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(department);
+            return View(category);
         }
 
-        // GET: Departments/Delete/5
+        // GET: Categories/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +123,30 @@ namespace NesMeet.Controllers
                 return NotFound();
             }
 
-            var department = await _context.Departments
+            var category = await _context.Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (department == null)
+            if (category == null)
             {
                 return NotFound();
             }
 
-            return View(department);
+            return View(category);
         }
 
-        // POST: Departments/Delete/5
+        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var department = await _context.Departments.FindAsync(id);
-            _context.Departments.Remove(department);
+            var category = await _context.Categories.FindAsync(id);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartmentExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _context.Departments.Any(e => e.Id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,23 +11,23 @@ using NesMeet.Models;
 
 namespace NesMeet.Controllers
 {
-    public class TopicsController : Controller
+    [Authorize(Roles = "Admin,Staff")]
+    public class ClassProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TopicsController(ApplicationDbContext context)
+        public ClassProfileController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Topics
+        // GET: ClassProfiles
         public async Task<IActionResult> Index()
         {
-            var topics = await _context.Topics.Include(t => t.Classroom).ToListAsync();
-            return View(topics);
+            return View(await _context.ClassProfiles.ToListAsync());
         }
 
-        // GET: Topics/Details/5
+        // GET: ClassProfiles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,44 +35,39 @@ namespace NesMeet.Controllers
                 return NotFound();
             }
 
-            var topic = await _context.Topics
-                .Include(t => t.Classroom)
+            var classProfile = await _context.ClassProfiles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
+            if (classProfile == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(classProfile);
         }
 
-        // GET: Topics/Create
-        public IActionResult Create(int? classroomId)
+        // GET: ClassProfiles/Create
+        public IActionResult Create()
         {
-            ViewData["ClassroomId"] = classroomId;
-            ViewData["TrainerId"] = new SelectList(_context.Users, "Id", "Email");
             return View();
         }
 
-        // POST: Topics/Create
+        // POST: ClassProfiles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ClassroomId,TrainerId")] Topic topic)
+        public async Task<IActionResult> Create([Bind("Id,Code,EnrolmentYear,PreferredCampus")] ClassProfile classProfile)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(topic);
+                _context.Add(classProfile);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), "Classroom", new { id = topic.ClassroomId });
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassroomId"] = new SelectList(_context.Classrooms, "Id", "Id", topic.ClassroomId);
-            
-            return View(topic);
+            return View(classProfile);
         }
 
-        // GET: Topics/Edit/5
+        // GET: ClassProfiles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -79,23 +75,22 @@ namespace NesMeet.Controllers
                 return NotFound();
             }
 
-            var topic = await _context.Topics.FindAsync(id);
-            if (topic == null)
+            var classProfile = await _context.ClassProfiles.FindAsync(id);
+            if (classProfile == null)
             {
                 return NotFound();
             }
-            ViewData["TrainerId"] = new SelectList(_context.Users, "Id", "Email", topic.TrainerId);
-            return View(topic);
+            return View(classProfile);
         }
 
-        // POST: Topics/Edit/5
+        // POST: ClassProfiles/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ClassroomId,TrainerId")] Topic topic)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Code,EnrolmentYear,PreferredCampus")] ClassProfile classProfile)
         {
-            if (id != topic.Id)
+            if (id != classProfile.Id)
             {
                 return NotFound();
             }
@@ -104,12 +99,12 @@ namespace NesMeet.Controllers
             {
                 try
                 {
-                    _context.Update(topic);
+                    _context.Update(classProfile);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TopicExists(topic.Id))
+                    if (!ClassProfileExists(classProfile.Id))
                     {
                         return NotFound();
                     }
@@ -118,13 +113,12 @@ namespace NesMeet.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Details),"Classroom", new { id = topic.ClassroomId});
+                return RedirectToAction(nameof(Index));
             }
-            ViewData["ClassroomId"] = new SelectList(_context.Classrooms, "Id", "Id", topic.ClassroomId);
-            return View(topic);
+            return View(classProfile);
         }
 
-        // GET: Topics/Delete/5
+        // GET: ClassProfiles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,32 +126,30 @@ namespace NesMeet.Controllers
                 return NotFound();
             }
 
-            var topic = await _context.Topics
-                .Include(t => t.Classroom)
+            var classProfile = await _context.ClassProfiles
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (topic == null)
+            if (classProfile == null)
             {
                 return NotFound();
             }
 
-            return View(topic);
+            return View(classProfile);
         }
 
-        // POST: Topics/Delete/5
+        // POST: ClassProfiles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            var topic = await _context.Topics.FindAsync(id);
-            var classroomId = topic.ClassroomId;
-            _context.Topics.Remove(topic);
+            var classProfile = await _context.ClassProfiles.FindAsync(id);
+            _context.ClassProfiles.Remove(classProfile);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), "Classroom", new { id = topic.ClassroomId });
+            return RedirectToAction(nameof(Index));
         }
 
-        private bool TopicExists(int id)
+        private bool ClassProfileExists(int? id)
         {
-            return _context.Topics.Any(e => e.Id == id);
+            return _context.ClassProfiles.Any(e => e.Id == id);
         }
     }
 }

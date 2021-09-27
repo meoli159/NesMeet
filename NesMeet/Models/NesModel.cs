@@ -8,7 +8,7 @@ namespace NesMeet.Models
 {
         public enum PreferredCampus { PPT, NX}
         public enum Gender { Male, Female, Other}
-        public enum Sesmester { Spring, Summer, Fall, Winter}
+        public enum Semester { Spring, Summer, Fall, Winter}
         public enum TrainerType { Internal, External}
         public enum Role { Admin, Staff, Trainer, Trainee}
         
@@ -23,7 +23,7 @@ namespace NesMeet.Models
             public string LastName { get; set; }
 
             [DataType(DataType.DateTime)]
-            [DisplayFormat(DataFormatString = "{0:dd//MM/yyyy}", ApplyFormatInEditMode = true)]
+            [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
             public DateTime? Birthday { get; set; }
 
             [Required]
@@ -42,7 +42,7 @@ namespace NesMeet.Models
         public class Trainee: CUser
         {
             public int? TOEIC { get; set; }
-            //..
+            
         }
 
         [Table("Trainer")]
@@ -56,7 +56,7 @@ namespace NesMeet.Models
 
         public class Category
         {
-            public int ID { get; set; }
+            public int Id { get; set; }
             public string Name { get; set; }
             public string Description { get; set; }
 
@@ -84,15 +84,15 @@ namespace NesMeet.Models
         public class Department
         {
             public int Id { get; set; }
-            public String Name { get; set; }
+            public string Name { get; set; }
 
             public virtual ICollection<CUser> Users { get; set; }
         }
 
         public class ClassProfile
         {
-            public int? Id { get; set; }
-            public String Code { get; set; }
+            public int Id { get; set; }
+            public string Code { get; set; }
             public int? EnrolmentYear { get; set; }
             public PreferredCampus? PreferredCampus { get; set; }
             //..
@@ -103,7 +103,7 @@ namespace NesMeet.Models
         public class Classroom
         {
             public int Id { get; set; }
-            public String Code { get; set; }
+            public string Code { get; set; }
 
             [Required]
             [DataType(DataType.DateTime)]
@@ -119,7 +119,7 @@ namespace NesMeet.Models
             public int Year { get; set; }
 
             [Required]
-            public Sesmester Sesmester{get; set;}
+            public Semester Semester{get; set;}
 
             [Required]
             public int Part { get; set; }
